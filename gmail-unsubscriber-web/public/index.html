@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Gmail Unsubscriber Web</title>
+</head>
+<body>
+  <div class="popup-container">
+    <div class="header">
+      <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" alt="Gmail" class="logo">
+      <h1>Gmail Unsubscriber</h1>
+    </div>
+    <div class="welcome">
+      <h2>Welcome!</h2>
+      <p>Clean your inbox in seconds.<br>
+      <span style="color:#1a73e8;">Unsubscribe</span> from unwanted emails with one click.</p>
+    </div>
+    <div id="global-stats" class="stats-bar">Loading stats...</div>
+    <button id="login-button">Log in to Gmail</button>
+    <div id="scan-stats" class="stats-bar"></div>
+    <div id="results"></div>
+    <button id="load-more-button" style="display:none;">Load More</button>
+    <button id="unsubscribe-button" disabled>Unsubscribe</button>
+    <!-- <div id="ads-section">
+      <button id="watch-ad-button">Watch Ad to Unlock Unsubscribe</button>
+      <div id="reward-message" style="color: green; display: none;">Reward unlocked! You can now unsubscribe.</div>
+    </div> -->
+  </div>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="../src/main.js"></script>
+</body>
+</html>
