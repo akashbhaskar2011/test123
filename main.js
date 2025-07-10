@@ -251,11 +251,11 @@ document.addEventListener("DOMContentLoaded", () => {
     adBox.style.textAlign = "center";
     adBox.innerHTML = `
       <h2>Watch this ad to unlock more!</h2>
-      <p style="margin-bottom:20px;">(Ad: Please wait 5 seconds...)</p>
+      <p style="margin-bottom:20px;">(Ad: Please wait for the ad to finish...)</p>
       <div id="adsense-ad" style="margin-bottom:20px;">
         <!-- AdSense ad will be injected here -->
       </div>
-      <button id="skip-ad-btn" style="margin-top:10px;">Skip Ad</button>
+      <button id="skip-ad-btn" style="margin-top:10px;" disabled>Skip Ad (<span id="ad-timer">15</span>s)</button>
     `;
 
     overlay.appendChild(adBox);
@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
     adsenseScript.crossOrigin = "anonymous";
     document.getElementById("adsense-ad").appendChild(adsenseScript);
 
-    // Optionally, add an <ins> tag for a responsive ad unit
+    // Add an <ins> tag for a responsive ad unit
     const ins = document.createElement("ins");
     ins.className = "adsbygoogle";
     ins.style.display = "block";
@@ -278,15 +278,29 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("adsense-ad").appendChild(ins);
 
     // Trigger adsbygoogle (required for AdSense)
-    const adsbygoogle = window.adsbygoogle || [];
-    adsbygoogle.push({});
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
 
+    // Timer logic for skip button
+    let seconds = 15; // Set to your ad's minimum display time
+    const skipBtn = adBox.querySelector("#skip-ad-btn");
+    const timerSpan = adBox.querySelector("#ad-timer");
+    const timerInterval = setInterval(() => {
+      seconds--;
+      timerSpan.textContent = seconds;
+      if (seconds <= 0) {
+        clearInterval(timerInterval);
+        skipBtn.disabled = false;
+        skipBtn.textContent = "Skip Ad";
+      }
+    }, 1000);
+
+    // Auto-close after timer (rewarded)
     let adTimer = setTimeout(() => {
       document.body.removeChild(overlay);
       adInProgress = false;
       if (typeof onAdViewed === "function") onAdViewed();
       alert("Thanks for watching the ad! You can now load more.");
-    }, 5000);
+    }, 15000); // Match this to your timer
 
     function deselectLast5() {
       let selected = getSelectedLinks();
@@ -297,8 +311,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    adBox.querySelector("#skip-ad-btn").addEventListener("click", () => {
+    skipBtn.addEventListener("click", () => {
+      if (skipBtn.disabled) return;
       clearTimeout(adTimer);
+      clearInterval(timerInterval);
       document.body.removeChild(overlay);
       adInProgress = false;
       deselectLast5();
@@ -308,6 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay.addEventListener("click", (e) => {
       if (e.target === overlay) {
         clearTimeout(adTimer);
+        clearInterval(timerInterval);
         document.body.removeChild(overlay);
         adInProgress = false;
         deselectLast5();
