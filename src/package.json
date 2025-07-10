@@ -1,0 +1,25 @@
+{
+  "name": "gmail-unsubscriber-web",
+  "version": "1.0.0",
+  "description": "A standalone web application to help users unsubscribe from unwanted emails in Gmail.",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "live-server public",
+    "build": "echo 'Build process can be defined here'",
+    "test": "echo 'No tests defined'"
+  },
+  "keywords": [
+    "gmail",
+    "unsubscriber",
+    "web",
+    "email"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.1"
+  }
+}
