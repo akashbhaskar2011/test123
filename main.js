@@ -251,12 +251,35 @@ document.addEventListener("DOMContentLoaded", () => {
     adBox.style.textAlign = "center";
     adBox.innerHTML = `
       <h2>Watch this ad to unlock more!</h2>
-      <p style="margin-bottom:20px;">(Simulated ad: Please wait 5 seconds...)</p>
+      <p style="margin-bottom:20px;">(Ad: Please wait 5 seconds...)</p>
+      <div id="adsense-ad" style="margin-bottom:20px;">
+        <!-- AdSense ad will be injected here -->
+      </div>
       <button id="skip-ad-btn" style="margin-top:10px;">Skip Ad</button>
     `;
 
     overlay.appendChild(adBox);
     document.body.appendChild(overlay);
+
+    // Inject AdSense script and ad container
+    const adsenseScript = document.createElement("script");
+    adsenseScript.async = true;
+    adsenseScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7128422467368498";
+    adsenseScript.crossOrigin = "anonymous";
+    document.getElementById("adsense-ad").appendChild(adsenseScript);
+
+    // Optionally, add an <ins> tag for a responsive ad unit
+    const ins = document.createElement("ins");
+    ins.className = "adsbygoogle";
+    ins.style.display = "block";
+    ins.setAttribute("data-ad-client", "ca-pub-7128422467368498");
+    ins.setAttribute("data-ad-slot", "1234567890"); // Replace with your ad slot
+    ins.setAttribute("data-ad-format", "auto");
+    document.getElementById("adsense-ad").appendChild(ins);
+
+    // Trigger adsbygoogle (required for AdSense)
+    const adsbygoogle = window.adsbygoogle || [];
+    adsbygoogle.push({});
 
     let adTimer = setTimeout(() => {
       document.body.removeChild(overlay);
@@ -266,7 +289,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 5000);
 
     function deselectLast5() {
-      // Remove the last 5 selected links from localStorage and update UI
       let selected = getSelectedLinks();
       if (selected.length > 0) {
         selected = selected.slice(0, selected.length - 5);
